@@ -1,8 +1,5 @@
 opencv-python
-torch
-torchvision
-bleak
-scikit-learn
+tensorflow
 numpy
 pandas
 websockets

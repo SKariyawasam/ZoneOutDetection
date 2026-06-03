@@ -23,6 +23,7 @@ var/
 .venv
 venv/
 ENV/
+fyp_env*/
 
 # Node/Vite
 node_modules/
