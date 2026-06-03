@@ -1,0 +1,7 @@
+[submodule "DaiSEE Code"]
+	path = DaiSEE Code
+	url = https://github.com/SKariyawasam/Engagement-recognition-using-DAISEE-dataset.git
+
+[submodule "DipSEER Code"]
+	path = DipSEER Code
+	url = https://github.com/SKariyawasam/DIPSEER-A-Dataset-for-In-Person-Student-Emotion-and-Engagement-Recognition-in-the-Wild.git
