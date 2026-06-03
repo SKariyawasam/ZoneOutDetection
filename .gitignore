@@ -29,6 +29,11 @@ node_modules/
 dist/
 .npm/
 
+# Datasets (Do not commit massive dataset files)
+Datasets/
+dataset/
+data/
+
 # OS Files
 .DS_Store
 Thumbs.db
