@@ -1,0 +1,8 @@
+opencv-python
+torch
+torchvision
+bleak
+scikit-learn
+numpy
+pandas
+websockets
