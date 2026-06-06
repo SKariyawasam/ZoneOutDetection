@@ -76,18 +76,36 @@ header {
   gap: 0.5rem;
   padding: 0.5rem 1rem;
   border-radius: 999px;
-  background: rgba(16, 185, 129, 0.1);
-  color: var(--state-focused);
   font-weight: 600;
   font-size: 0.875rem;
+  transition: all 0.3s ease;
+}
+
+.status-pill.active {
+  background: rgba(16, 185, 129, 0.1);
+  color: var(--state-focused);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.status-pill.disconnected {
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--state-zoned);
+  border: 1px solid rgba(239, 68, 68, 0.2);
 }
 
 .dot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background-color: var(--state-focused);
   animation: pulse 2s infinite;
+}
+
+.status-pill.active .dot {
+  background-color: var(--state-focused);
+}
+
+.status-pill.disconnected .dot {
+  background-color: var(--state-zoned);
 }
 
 /* Grid */
@@ -255,6 +273,7 @@ header {
   display: flex;
   align-items: center;
   justify-content: center;
+  text-align: center;
   transition: all 0.5s ease;
   position: relative;
 }
@@ -297,6 +316,17 @@ header {
 
 .glow-orb.focused h2 { color: var(--state-focused); }
 .glow-orb.zoned h2 { color: var(--state-zoned); }
+
+.glow-orb.away {
+  background: linear-gradient(135deg, rgba(148, 163, 184, 0.2), rgba(148, 163, 184, 0.05));
+  border: 2px solid rgba(148, 163, 184, 0.5);
+}
+
+.glow-orb.away::before {
+  background: rgba(148, 163, 184, 0.3);
+}
+
+.glow-orb.away h2 { color: var(--text-secondary); }
 
 .state-subtext {
   margin-top: 1.5rem;

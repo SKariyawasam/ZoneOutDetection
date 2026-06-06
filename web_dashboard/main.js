@@ -12,13 +12,36 @@ const glowOrb = document.getElementById('glow-orb');
 const finalState = document.getElementById('final-state');
 const alertOverlay = document.getElementById('alert-overlay');
 
+const systemStatus = document.getElementById('system-status');
+const watchStatus = document.getElementById('watch-status');
+const watchBadge = document.getElementById('watch-badge');
+
+function updateWatchStatus(isConnected) {
+  if (isConnected) {
+    watchStatus.className = 'status-pill active';
+    watchStatus.innerHTML = '<span class="dot"></span> Watch Online';
+    watchBadge.style.background = 'rgba(34, 211, 238, 0.15)';
+    watchBadge.style.color = 'var(--accent-cyan)';
+    watchBadge.style.borderColor = 'rgba(34, 211, 238, 0.2)';
+    watchBadge.innerText = 'Online';
+  } else {
+    watchStatus.className = 'status-pill disconnected';
+    watchStatus.innerHTML = '<span class="dot"></span> Watch Offline';
+    watchBadge.style.background = 'rgba(239, 68, 68, 0.15)';
+    watchBadge.style.color = 'var(--state-zoned)';
+    watchBadge.style.borderColor = 'rgba(239, 68, 68, 0.2)';
+    watchBadge.innerText = 'Offline';
+  }
+}
+
 // Initialize Connection to Python Backend
 function connectWebSocket() {
   const ws = new WebSocket('ws://localhost:8765');
 
   ws.onopen = () => {
     console.log('Connected to Multimodal Backend');
-    document.querySelector('.status-pill').innerHTML = '<span class="dot"></span> Connected';
+    systemStatus.className = 'status-pill active';
+    systemStatus.innerHTML = '<span class="dot"></span> System Live';
   };
 
   ws.onmessage = (event) => {
@@ -32,7 +55,9 @@ function connectWebSocket() {
 
   ws.onclose = () => {
     console.log('Disconnected. Retrying in 3 seconds...');
-    document.querySelector('.status-pill').innerHTML = '<span class="dot" style="background:var(--state-zoned)"></span> Disconnected';
+    systemStatus.className = 'status-pill disconnected';
+    systemStatus.innerHTML = '<span class="dot"></span> System Offline';
+    updateWatchStatus(false);
     setTimeout(connectWebSocket, 3000);
   };
 }
@@ -48,20 +73,36 @@ function updateDashboard(data) {
   physioBar.style.width = `${pProb}%`;
   physioVal.innerText = data.physio_prob.toFixed(2);
 
-  // Update Mock HR/HRV based on state for visual effect
-  hrVal.innerText = data.state === "zoned out" ? "65 bpm" : "82 bpm";
-  hrvVal.innerText = data.state === "zoned out" ? "45 ms" : "30 ms";
+  // Update Watch Connection status
+  if ('watch_connected' in data) {
+    updateWatchStatus(data.watch_connected);
+  }
+
+  // Update actual HR/HRV from watch payload
+  if (data.hr && data.hrv) {
+    hrVal.innerText = `${Math.round(data.hr)} bpm`;
+    hrvVal.innerText = `${Math.round(data.hrv)} ms`;
+  } else {
+    // Fallback if no real data yet
+    hrVal.innerText = "-- bpm";
+    hrvVal.innerText = "-- ms";
+  }
 
   // Update Fusion State
-  if (data.state === "zoned out") {
-    glowOrb.classList.remove('focused');
+  if (data.state === "user away") {
+    glowOrb.classList.remove('focused', 'zoned');
+    glowOrb.classList.add('away');
+    finalState.innerText = "USER AWAY";
+    alertOverlay.classList.add('hidden');
+  } else if (data.state === "zoned out") {
+    glowOrb.classList.remove('focused', 'away');
     glowOrb.classList.add('zoned');
     finalState.innerText = "ZONED OUT";
     
     // Show Alert
     alertOverlay.classList.remove('hidden');
   } else {
-    glowOrb.classList.remove('zoned');
+    glowOrb.classList.remove('zoned', 'away');
     glowOrb.classList.add('focused');
     finalState.innerText = "FOCUSED";
     
