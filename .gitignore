@@ -1,7 +1,7 @@
-# Python
+﻿# Python
 __pycache__/
 *.py[cod]
-*$py.class
+*.class
 *.so
 .Python
 env/
@@ -23,17 +23,31 @@ var/
 .venv
 venv/
 ENV/
-fyp_env*/
+fyp_env/
+fyp_env_310/
+**/fyp_env*/
 
-# Node/Vite
-node_modules/
-dist/
+# Node / Vite
+**/node_modules/
+**/dist/
 .npm/
 
-# Datasets (Do not commit massive dataset files)
+# Datasets & Large Data Caches (GitHub 100MB limit)
 Datasets/
-dataset/
-data/
+**/Datasets/
+**/dataset/
+**/data/
+*.npz
+**/cached_multimodal_dataset.pkl
+*.exe
+
+# Android / Gradle
+**/.gradle/
+**/.idea/
+**/local.properties
+**/build/
+*.hprof
+.cxx/
 
 # OS Files
 .DS_Store

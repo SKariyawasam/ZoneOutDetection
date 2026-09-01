@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Multimodal Detection System</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./style.css">
+  </head>
+  <body>
+    <!-- Alert Overlay (Interactive Laptop Popup) -->
+    <div id="alert-overlay" class="alert-overlay hidden">
+      <div class="alert-content">
+        <span class="alert-icon" style="font-size: 3.5rem; display: block; margin-bottom: 0.5rem; animation: pulse 1s infinite;">🚨</span>
+        <h1>ATTENTION REQUIRED</h1>
+        <p>Mind-wandering detected by Galaxy Watch & Webcam.</p>
+        <p style="font-size: 0.95rem; color: var(--text-muted); margin-top: 0.5rem; margin-bottom: 1.5rem;">Take a deep breath and gently refocus on your task.</p>
+        <button id="dismiss-alert-btn" style="background: var(--accent-cyan); color: #0f172a; font-weight: 700; border: none; padding: 0.75rem 2rem; border-radius: 9999px; font-size: 1rem; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 0 20px rgba(34, 211, 238, 0.4);">
+          I'm Refocused 🎯
+        </button>
+      </div>
+    </div>
+
+    <div class="dashboard-container">
+      <header>
+        <div class="logo">
+          <span class="icon">👁️</span>
+          <h2>Cognitive Focus <span>Monitor</span></h2>
+        </div>
+        <div class="status-container" style="display: flex; gap: 0.75rem;">
+          <div id="system-status" class="status-pill active">
+            <span class="dot"></span> System Live
+          </div>
+          <div id="watch-status" class="status-pill disconnected">
+            <span class="dot"></span> Watch Offline
+          </div>
+        </div>
+      </header>
+
+      <main class="grid-layout">
+        <!-- Visual Node -->
+        <div class="card glass-card">
+          <div class="card-header">
+            <h3>Visual Processing</h3>
+            <div style="display: flex; gap: 0.5rem; align-items: center;">
+              <span id="vis-weight-badge" class="badge" style="background: rgba(34, 211, 238, 0.15); color: var(--accent-cyan); border: 1px solid rgba(34, 211, 238, 0.2);">Weight: 35%</span>
+              <span class="badge">Module A</span>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="cam-placeholder">
+              <span class="cam-icon">📷</span>
+              <p id="cam-status-text">Webcam Active</p>
+            </div>
+            <div class="metric">
+              <label>Visual Engagement</label>
+              <div class="progress-bar">
+                <div id="visual-bar" class="progress-fill" style="width: 0%"></div>
+              </div>
+              <span id="visual-val" class="metric-val">0.00</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Physio Node -->
+        <div class="card glass-card">
+          <div class="card-header">
+            <h3>Physiological Data</h3>
+            <div style="display: flex; gap: 0.5rem; align-items: center;">
+              <span id="phys-weight-badge" class="badge" style="background: rgba(168, 85, 247, 0.15); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.2);">Weight: 65%</span>
+              <span id="watch-badge" class="badge" style="background: rgba(239, 68, 68, 0.15); color: var(--state-zoned); border: 1px solid rgba(239, 68, 68, 0.2);">Offline</span>
+              <span class="badge">Module B</span>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="cam-placeholder" style="margin-bottom: 1.5rem; background: rgba(0, 0, 0, 0.2); border-radius: 1rem; padding: 0.75rem; text-align: center; border: 1px solid rgba(255, 255, 255, 0.05); display: flex; align-items: center; justify-content: center; gap: 0.75rem;">
+              <span id="watch-status-icon" style="font-size: 1.4rem;">⌚</span>
+              <p id="watch-status-text" style="font-size: 0.9rem; font-weight: 500; color: var(--text-muted); margin: 0;">Watch Disconnected</p>
+            </div>
+            <div class="watch-stats">
+              <div class="stat-box">
+                <span class="stat-icon">❤️</span>
+                <div class="stat-info">
+                  <span class="stat-label">Heart Rate</span>
+                  <span id="hr-val" class="stat-value">-- bpm</span>
+                </div>
+              </div>
+              <div class="stat-box">
+                <span class="stat-icon">⏱️</span>
+                <div class="stat-info">
+                  <span class="stat-label">HRV (RMSSD)</span>
+                  <span id="hrv-val" class="stat-value">-- ms</span>
+                </div>
+              </div>
+            </div>
+            <div class="metric mt-4">
+              <label>Physio Focus Level</label>
+              <div class="progress-bar">
+                <div id="physio-bar" class="progress-fill physio-color" style="width: 0%"></div>
+              </div>
+              <span id="physio-val" class="metric-val">0.00</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Fusion Node / Final State -->
+        <div class="card glass-card state-card">
+          <div class="card-header">
+            <h3>Meta-Classifier Decision</h3>
+            <span class="badge fusion">Module C</span>
+          </div>
+          <div class="card-body center-flex">
+            <div id="glow-orb" class="glow-orb focused">
+              <h2 id="final-state">FOCUSED</h2>
+            </div>
+            <p class="state-subtext">Real-time Late Fusion Output</p>
+          </div>
+        </div>
+      </main>
+    </div>
+    
+    <script type="module" src="/main.js"></script>
+  </body>
+</html>
