@@ -1,5 +1,6 @@
 ﻿# Python
 __pycache__/
+**/__pycache__/
 *.py[cod]
 *.class
 *.so
@@ -28,23 +29,31 @@ fyp_env_310/
 **/fyp_env*/
 
 # Node / Vite
+node_modules/
 **/node_modules/
+dist/
 **/dist/
 .npm/
 
 # Datasets & Large Data Caches (GitHub 100MB limit)
 Datasets/
 **/Datasets/
+dataset/
 **/dataset/
+data/
 **/data/
 *.npz
 **/cached_multimodal_dataset.pkl
 *.exe
 
 # Android / Gradle
+.gradle/
 **/.gradle/
+.idea/
 **/.idea/
+local.properties
 **/local.properties
+build/
 **/build/
 *.hprof
 .cxx/
